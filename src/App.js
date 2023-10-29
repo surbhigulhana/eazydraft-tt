@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from "react"
-import Button from '@mui/material/Button';
 
 function TextItem(props){
 
@@ -13,7 +12,9 @@ function TextItem(props){
       <p>
         Age: {props.ages[props.index]}
       </p>
-      <Button onClick={()=>props.updateDetails(props.names[props.index], props.age, props.index)}>Reset Details</Button>
+    
+      <button onClick={() => props.updateDetails(props.names[props.index], props.ages[props.index], props.index)}>Reset Details</button>
+
     </div>
   )
 }
@@ -25,24 +26,27 @@ function App() {
 
 
 
-  function addItem(){
-    names.push(Math.random().toString(36).substring(2,7))
-    setNames(names)
-    ages.push(Math.floor(Math.random() * 100))
-    setAges(ages)
+
+    function addItem() {
+      const newName = Math.random().toString(36).substring(2, 7);
+      const newAge = Math.floor(Math.random() * 100);
+      setNames([...names, newName]);
+      setAges([...ages, newAge]);
+    
   }
 
-  function updateDetails(name, age, index){
-    //Remove current name and replace with blank
-    let currentName = names[index]
-    let currentAge = ages[index]
-    let namearray = names.filter(item=>item!=name)
-    let agearray = ages.filter(item=>item!==age)
-    namearray.push("")
-    agearray.push("")
-    setNames(namearray)
-    setAges(agearray)
+  function updateDetails(name, age, index) {
+    // Remove current name and replace with blank
+    let nameArray = [...names];
+    let ageArray = [...ages];
+  
+    nameArray[index] = "";
+    ageArray[index] = "";
+  
+    setNames(nameArray);
+    setAges(ageArray);
   }
+  
 
   //Whenever name is updated, print it
   console.log(names)
@@ -54,7 +58,7 @@ function App() {
         <p>
          Welcome to the EazyDraft test application.
         </p>
-        <div onClick={addItem}>Click to add a field</div>
+        <button onClick={addItem}>Click to add a field</button>
         {
           names.map((name, index)=><TextItem names={names} ages={ages} index={index} updateDetails={updateDetails}/>)
         }
